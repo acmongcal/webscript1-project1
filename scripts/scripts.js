@@ -100,13 +100,14 @@ class Player {
     }
 }
 
-class Enemy {
-    constructor(size, speed){
+class Block {
+    constructor(size, speed, color, type, yindex = 0){
         this.x = canvas.width + size;
-        this.y = (canvas.height * elementY) - size;
+        this.y = ((canvas.height * elementY) +yindex) - size;
         this.size = size;
-        this.color = "red";
+        this.color = color;
         this.slideSpeed = speed;
+        this.type = type;
     }
 
     draw() {
@@ -117,9 +118,10 @@ class Enemy {
     move() {
         this.draw();
         this.x -= this.slideSpeed;
-    }
-    
+    }    
 }
+
+
 
 class Layer{ //https://www.youtube.com/watch?v=4wz1zrbTAo0
     constructor(image, movSpeed, y_Position){
@@ -151,12 +153,20 @@ class Layer{ //https://www.youtube.com/watch?v=4wz1zrbTAo0
     }
 }
 
-//Auto generate enemies
-function generateEnemies() {
+//Auto generate enemies and points
+function generateBlocks() {
     let timeDelay = randomInterval(presetTime);
-    arrayBlocks.push(new Enemy(50, enemySpeed));
-    setTimeout(generateEnemies, timeDelay);
+    let random = getRandomNumber(1,10);
+    let randomY = getRandomNumber(1,50);
+    if (random < 6){
+        arrayBlocks.push(new Block(50, enemySpeed, "red", "enemy"));
+    }
+    else{
+        arrayBlocks.push(new Block(30, enemySpeed, "blue", "point", -randomY));
+    }  
+    setTimeout(generateBlocks, timeDelay);
 }
+
 
 function randomInterval(timeInterval) {
     let returnTime = timeInterval;
@@ -182,7 +192,7 @@ function drawScore() {
     ctx.fillStyle = "black";
     let scoreString = score.toString();
     let xOffset = ((scoreString.length - 1) * 20);
-    ctx.fillText(scoreString, 280 - xOffset, 100);
+    ctx.fillText(scoreString, 900 - xOffset, 100);
 }
 
 function shouldIncreaseSpeed() {
@@ -192,6 +202,7 @@ function shouldIncreaseSpeed() {
         enemySpeed++;
         presetTime >= 100 ? presetTime -= 100 : presetTime = presetTime / 2;
         //Update speed of existing blocks
+        
         arrayBlocks.forEach(block => {
             block.slideSpeed = enemySpeed;
         });
@@ -201,7 +212,6 @@ function shouldIncreaseSpeed() {
 
 let animationId = null;
 const bgLayer = new Layer(bg, enemySpeed,0);
-console.log(bgLayer.image);
 function animate() {
     animationId = requestAnimationFrame(animate);
     ctx.clearRect(0,0,canvas.width,canvas.height);
@@ -218,14 +228,20 @@ function animate() {
     //Check to see if game speed should be increased
     shouldIncreaseSpeed();
 
+    
     arrayBlocks.forEach((arrayBlock, index) => {
         arrayBlock.move();
         //End game as player and enemy have collided
-        if(squaresColliding(player, arrayBlock)){
+        if(arrayBlock.type == "enemy" && squaresColliding(player, arrayBlock)){
             gameOverSFX.play();
             cardScore.textContent = score;
             card.style.display = "block";
             cancelAnimationFrame(animationId);
+        }
+
+        if(arrayBlock.type == "point" && squaresColliding(player, arrayBlock)){
+            score++;
+            arrayBlocks.splice(index, 1);
         }
 
         //Delete block that has left the screen
@@ -242,7 +258,7 @@ function animate() {
 startGame();
 animate();
 setTimeout(() => {
-    generateEnemies();
+    generateBlocks();
 }, randomInterval(presetTime))
 
 
