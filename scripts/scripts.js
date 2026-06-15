@@ -1,10 +1,13 @@
+// template source: https://codepen.io/LFCProductions/details/gOgZXEM
+
 const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext('2d');
+const ctx = canvas.getContext("2d");
 
 const card = document.getElementById("card");
 const cardScore = document.getElementById("card-score");
 
 //Global variables
+const bg = document.getElementById("game-bg");
 
 //SFX
 let scoreSFX = new Audio("https://archive.org/download/classiccoin/classiccoin.wav");
@@ -22,18 +25,19 @@ let scoreIncrement = 0;
 let arrayBlocks = [];
 //Enemy can speed up when player has scored points at intervals of 10
 let enemySpeed = 5;
-//So ball doesn't score more then one point at a time
-let canScore = true;
 //Used for 'setInterval'
 let presetTime = 1000;
 
+
+// calculate y value for the game elements
+let elementY = 0.75; 
 function startGame() {
-    player = new Player(150,350,50,"black");
+    player = new Player(150,(canvas.height * elementY) - 50,50,"black");
     arrayBlocks = [];
     score = 0;
     scoreIncrement = 0;
     enemySpeed = 5;
-    presetTime = 1000;
+    presetTime = 1500;
 }
 
 function getRandomNumber(min,max){
@@ -96,10 +100,10 @@ class Player {
     }
 }
 
-class AvoidBlock {
+class Enemy {
     constructor(size, speed){
         this.x = canvas.width + size;
-        this.y = 400 - size;
+        this.y = (canvas.height * elementY) - size;
         this.size = size;
         this.color = "red";
         this.slideSpeed = speed;
@@ -110,24 +114,48 @@ class AvoidBlock {
         ctx.fillRect(this.x,this.y,this.size,this.size);
     }
 
-    slide() {
+    move() {
         this.draw();
         this.x -= this.slideSpeed;
     }
     
 }
 
+class Layer{ //https://www.youtube.com/watch?v=4wz1zrbTAo0
+    constructor(image, movSpeed, y_Position){
+        this.x=0;
+        this.y = y_Position;
+        this.width = canvas.width;
+        this.height = canvas.height;
+        this.x2 = this.width;
+        this.image = image;
+        this.speedModifier = movSpeed;
+    }
+    draw(){
+        ctx.drawImage(this.image,this.x,0, canvas.width, canvas.height);
+        ctx.drawImage(this.image,this.x2,0, canvas.width, canvas.height);
+    }
+    update(){
+        if(this.x < -canvas.width){
+            this.x=canvas.width - this.speedModifier + this.x2;
+        }
+        else{
+            this.x-=(this.speedModifier-3);
+        }
+        if(this.x2 < -canvas.width){
+            this.x2=canvas.width - this.speedModifier + this.x;
+        }
+        else{
+            this.x2-=(this.speedModifier-3);
+        }
+    }
+}
 
-
-//Auto generate blocks
-function generateBlocks() {
-
-
+//Auto generate enemies
+function generateEnemies() {
     let timeDelay = randomInterval(presetTime);
-    arrayBlocks.push(new AvoidBlock(50, enemySpeed));
-
-
-    setTimeout(generateBlocks, timeDelay);
+    arrayBlocks.push(new Enemy(50, enemySpeed));
+    setTimeout(generateEnemies, timeDelay);
 }
 
 function randomInterval(timeInterval) {
@@ -142,8 +170,8 @@ function randomInterval(timeInterval) {
 
 function drawBackgroundLine() {
     ctx.beginPath();
-    ctx.moveTo(0,400);
-    ctx.lineTo(600,400);
+    ctx.moveTo(0,(canvas.height * elementY));
+    ctx.lineTo(canvas.width,(canvas.height * elementY));
     ctx.lineWidth = 1.9;
     ctx.strokeStyle = "black";
     ctx.stroke();
@@ -159,23 +187,28 @@ function drawScore() {
 
 function shouldIncreaseSpeed() {
     //Check to see if game speed should be increased
-        if(scoreIncrement + 10 === score){
-            scoreIncrement = score;
-            enemySpeed++;
-            presetTime >= 100 ? presetTime -= 100 : presetTime = presetTime / 2;
-            //Update speed of existing blocks
-            arrayBlocks.forEach(block => {
-                block.slideSpeed = enemySpeed;
-            });
-            console.log("Speed increased");
-        }
+    if(scoreIncrement + 10 === score){
+        scoreIncrement = score;
+        enemySpeed++;
+        presetTime >= 100 ? presetTime -= 100 : presetTime = presetTime / 2;
+        //Update speed of existing blocks
+        arrayBlocks.forEach(block => {
+            block.slideSpeed = enemySpeed;
+        });
+        console.log("Speed increased");
+    }
 }
 
-
 let animationId = null;
+const bgLayer = new Layer(bg, enemySpeed,0);
+console.log(bgLayer.image);
 function animate() {
     animationId = requestAnimationFrame(animate);
     ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    bgLayer.update();
+    bgLayer.draw();
+
     //Canvas Logic
     drawBackgroundLine();
     drawScore();
@@ -186,7 +219,7 @@ function animate() {
     shouldIncreaseSpeed();
 
     arrayBlocks.forEach((arrayBlock, index) => {
-        arrayBlock.slide();
+        arrayBlock.move();
         //End game as player and enemy have collided
         if(squaresColliding(player, arrayBlock)){
             gameOverSFX.play();
@@ -209,7 +242,7 @@ function animate() {
 startGame();
 animate();
 setTimeout(() => {
-    generateBlocks();
+    generateEnemies();
 }, randomInterval(presetTime))
 
 
