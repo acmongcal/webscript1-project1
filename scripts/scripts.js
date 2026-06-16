@@ -6,8 +6,39 @@ const ctx = canvas.getContext("2d");
 const card = document.getElementById("card");
 const cardScore = document.getElementById("card-score");
 
+const menu = document.getElementById("menu");
+
 //Global variables
 const bg = document.getElementById("game-bg");
+
+//sprite sheet variables
+const spriteWidth = 13;
+const spriteHeight = 14;
+const borderWidth = 1;
+const spacingWidth = 1;
+
+var sample= new Image();
+sample.src = "images/sample-sprite.png";
+sample.crossOrigin = true;
+var position = spritePositionToImagePosition(1,0);
+sample.onload = function() {
+    ctx.drawImage(
+        sample,
+        // LOOK!
+        // we use the position from 
+        // spritePositionToImagePosition
+        // to start at an offset
+        // into the spritesheet!
+        position.x,
+        position.y,
+        spriteWidth,
+        spriteHeight,
+        0,
+        0,
+        spriteWidth,
+        spriteHeight
+    );
+};
 
 //SFX
 let scoreSFX = new Audio("https://archive.org/download/classiccoin/classiccoin.wav");
@@ -31,14 +62,6 @@ let presetTime = 1000;
 
 // calculate y value for the game elements
 let elementY = 0.75; 
-function startGame() {
-    player = new Player(150,(canvas.height * elementY) - 50,50,"black");
-    arrayBlocks = [];
-    score = 0;
-    scoreIncrement = 0;
-    enemySpeed = 5;
-    presetTime = 1500;
-}
 
 function getRandomNumber(min,max){
     return Math.floor(Math.random() * (max - min + 1) ) + min;
@@ -157,12 +180,13 @@ class Layer{ //https://www.youtube.com/watch?v=4wz1zrbTAo0
 function generateBlocks() {
     let timeDelay = randomInterval(presetTime);
     let random = getRandomNumber(1,10);
-    let randomY = getRandomNumber(1,50);
+    let randomY = getRandomNumber(1,3);
+    const pointY = [0,-60,-100];
     if (random < 6){
         arrayBlocks.push(new Block(50, enemySpeed, "red", "enemy"));
     }
     else{
-        arrayBlocks.push(new Block(30, enemySpeed, "blue", "point", -randomY));
+        arrayBlocks.push(new Block(30, enemySpeed, "blue", "point", pointY[randomY]));
     }  
     setTimeout(generateBlocks, timeDelay);
 }
@@ -210,6 +234,20 @@ function shouldIncreaseSpeed() {
     }
 }
 
+function spritePositionToImagePosition(row, col) {
+    return {
+        x: (
+            borderWidth +
+            col * (spacingWidth + spriteWidth)
+        ),
+        y: (
+            borderWidth +
+            row * (spacingWidth + spriteHeight)
+        )
+    }
+}
+
+
 let animationId = null;
 const bgLayer = new Layer(bg, enemySpeed,0);
 function animate() {
@@ -254,19 +292,17 @@ function animate() {
     
 }
 
-//Call first time on document load
-startGame();
-animate();
-setTimeout(() => {
-    generateBlocks();
-}, randomInterval(presetTime))
 
 
 
-
-
-
-
+function startGame() {
+    player = new Player(150,(canvas.height * elementY) - 50,50,"black");
+    arrayBlocks = [];
+    score = 0;
+    scoreIncrement = 0;
+    enemySpeed = 5;
+    presetTime = 1500;
+}
 
 //Restart game
 function restartGame(button) {
@@ -276,11 +312,28 @@ function restartGame(button) {
     requestAnimationFrame(animate);
 }
 
+function home(button){
+    card.style.display = "none";
+    canvas.style.display = "none";
+    button.blur();
+    menu.style.display="flex";
+}
+
+function displayGame(button){
+    canvas.style.display="block";
+    menu.style.display = "none";
+    startGame();
+    animate();
+    setTimeout(() => {
+        generateBlocks();
+    }, randomInterval(presetTime))
+}
+
 
 //User Controls
 addEventListener("keydown", e => {
     if(e.code === 'Space'){
-        if(!player.shouldJump){
+        if(player && !player.shouldJump){
             jumpSFX.play();
             player.jumpCounter = 0;
             player.shouldJump = true;
@@ -289,10 +342,14 @@ addEventListener("keydown", e => {
 });
 
 addEventListener('mousedown', e => {
-  if(!player.shouldJump){
-            jumpSFX.play();
-            player.jumpCounter = 0;
-            player.shouldJump = true;
+  if(player && !player.shouldJump){
+    jumpSFX.play();
+    player.jumpCounter = 0;
+    player.shouldJump = true;
   }
 });
 
+
+
+
+//CSS scripts

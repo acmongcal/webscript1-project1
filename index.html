@@ -15,13 +15,19 @@
   </head>
   <body>
     <main>
+      <section id="menu">
+          <h1>Save FBKingdom <img src="" alt=""></h1> 
+          <button onclick="displayGame(this)">Start Game</button>
+          <button>How to Play</button>
+          <button>Credits</button>
+      </section>
       <section id="overlay">
         <div id="card">
-          <p>You Scored: <span id="card-score">0</span></p>
-          <button onclick="restartGame(this)">Play Again?</button>
+          <p>You Earned: <span id="card-score">0</span></p>
+          <button onclick="home(this)">Return to FBKingdom</button>
+          <button onclick="restartGame(this)">Play Again</button>
         </div>
       </section>
-      <h1>Test</h1>
       <canvas width="1000" height="400" id="canvas">
         <img src="images/page_bg_raw.jpg" alt="holo-alternative" id="game-bg">
       </canvas>

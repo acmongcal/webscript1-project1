@@ -1,20 +1,50 @@
 body {
-  background-color: #333;
-  color: white;
-  height: 100vh;
-  width: 100vw;
-  position: fixed;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin: 0;
+  background-color: #0f131e;
+  color: #b29b64;
 }
+
+h1{
+  font-size: 5rem;
+}
+button {
+  outline: none;
+  color: #b29b64;
+  border: none;
+  background-color: #0f131e;
+  padding: 10px;
+  width: fit-content;
+  border-radius: 20px;
+  font-size: 20px;
+  cursor: pointer;
+  border: #b29b64 0.1rem solid;
+}
+
+
+#menu{
+  position:relative;
+  z-index: 10;
+  display: flex;
+  flex-wrap: wrap;
+  width:30rem;
+  flex-direction: column;
+  margin: 0 auto;
+  margin-top: 5rem;
+  align-items: center;
+}
+
+#menu button{
+  border-radius: 10px;
+  display: block;
+  width: 8rem;
+  margin: 1rem;
+}
+
 
 #canvas {
   border-radius: 5px;
   background-color: #f0f0f0;
   width: 100vw;
+  display: none;
 }
 
 #overlay {
@@ -31,7 +61,9 @@ body {
 }
 
 #overlay #card {
-  background-color: white;
+  background-color: #0f131e;
+  color: #b29b64;
+  border: #b29b64 0.1rem solid;
   width: 500px;
   height: 190px;
   border-radius: 5px;
@@ -45,17 +77,7 @@ body {
   user-select: none;
 }
 
-#overlay #card > button {
-  outline: none;
-  color: white;
-  border: none;
-  background-color: #1a8cff;
-  padding: 10px;
-  width: 90%;
-  border-radius: 20px;
-  font-size: 20px;
-  cursor: pointer;
-}
+
 
 @keyframes cardIn {
   0% {
