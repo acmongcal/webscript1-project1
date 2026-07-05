@@ -6,7 +6,11 @@ const ctx = canvas.getContext("2d");
 const card = document.getElementById("card");
 const cardScore = document.getElementById("card-score");
 
+//menu elements
 const menu = document.getElementById("menu");
+const homeBG = document.getElementById("bg");
+const help = document.getElementById("help");
+const credit = document.getElementById("credits");
 
 //Global variables
 const bg = document.getElementById("game-bg");
@@ -301,7 +305,7 @@ function startGame() {
     score = 0;
     scoreIncrement = 0;
     enemySpeed = 5;
-    presetTime = 1500;
+    presetTime = 1000;
 }
 
 //Restart game
@@ -312,14 +316,19 @@ function restartGame(button) {
     requestAnimationFrame(animate);
 }
 
+
+
+//Menu Functions
 function home(button){
     card.style.display = "none";
     canvas.style.display = "none";
     button.blur();
     menu.style.display="flex";
+    homeBG.style.display="flex";
 }
 
 function displayGame(button){
+    homeBG.style.display="none";
     canvas.style.display="block";
     menu.style.display = "none";
     startGame();
@@ -328,6 +337,13 @@ function displayGame(button){
         generateBlocks();
     }, randomInterval(presetTime))
 }
+
+//Display the element on the second parameter
+function swapMenu(menu1, menu2){
+    menu1.style.display = "none";
+    menu2.style.display = "flex";
+}
+
 
 
 //User Controls

@@ -1,11 +1,15 @@
 body {
   background-color: #0f131e;
   color: #b29b64;
+  font-family: "Shippori Mincho", serif;
+  font-weight: 400;
+  font-style: normal;
 }
 
 h1{
   font-size: 5rem;
 }
+
 button {
   outline: none;
   color: #b29b64;
@@ -14,9 +18,10 @@ button {
   padding: 10px;
   width: fit-content;
   border-radius: 20px;
+  border: #b29b64 0.1rem solid;
   font-size: 20px;
   cursor: pointer;
-  border: #b29b64 0.1rem solid;
+  
 }
 
 
@@ -32,11 +37,64 @@ button {
   align-items: center;
 }
 
+#help{
+  background-color: #0f131e;
+  position: relative;
+  z-index: 100;
+  display: none;
+  flex-wrap: wrap;
+  width: 30rem;
+  margin: 0 auto;
+  margin-top: 20rem;
+  align-items: center;
+  border-radius: 20px;
+  border: #b29b64 0.1rem solid;
+  padding: 30px;
+}
+#help button{
+  margin: 0 auto;
+}
+
+#credits{
+  background-color: #0f131e;
+  position: relative;
+  z-index: 100;
+  display: none;
+  flex-wrap: wrap;
+  width: 30rem;
+  margin: 0 auto;
+  margin-top: 20rem;
+  align-items: center;
+  border-radius: 20px;
+  border: #b29b64 0.1rem solid;
+  padding: 30px;
+}
+
+#credits button{
+  margin: 0 auto;
+}
 #menu button{
   border-radius: 10px;
   display: block;
-  width: 8rem;
+  width: 10rem;
   margin: 1rem;
+}
+
+
+
+
+#bg{
+  display: flex;
+  flex-wrap: wrap;
+  position: absolute;
+  top:0;
+  width: 100%;
+}
+
+#bg video{
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
 }
 
 
@@ -56,7 +114,6 @@ button {
   display: flex;
   justify-content: center;
   align-items: center;
-  color: black;
   text-align: center;
 }
 
@@ -65,7 +122,6 @@ button {
   color: #b29b64;
   border: #b29b64 0.1rem solid;
   width: 500px;
-  height: 190px;
   border-radius: 5px;
   display: none;
   animation: cardIn 1s forwards;

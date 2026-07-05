@@ -4,6 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Save FBKingdom</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="shortcut icon" href="/favicon.ico" />
@@ -11,27 +14,48 @@
     <link rel="manifest" href="/site.webmanifest" />
     <link rel="stylesheet" href="styles/normalize-fwd.css" />
     <link rel="stylesheet" href="styles/style.css" />
-    <script src="scripts/scripts.js" defer></script>
+    <script type="module" src="scripts/endlessRunnerGame.js" defer></script>
   </head>
   <body>
     <main>
       <section id="menu">
-          <h1>Save FBKingdom <img src="" alt=""></h1> 
-          <button onclick="displayGame(this)">Start Game</button>
-          <button>How to Play</button>
-          <button>Credits</button>
+        <h1>Save FBKingdom</h1>
+        <button id="start-btn">Start Game</button>
+        <button id= "help-btn">How to Play</button>
+        <button id="credits-btn">Credits</button>
+      </section>
+      <section id="help">
+        <h2>How to Play</h2>
+        <p>Clear the game by collecting points to bring back all the citizens of FBKingdom. Press spacebar or mouse left click to avoid obstacles.</p>
+        <button id="help-btn-home">Return</button>
+      </section>
+      <section id="credits">
+        <h2>Credits</h2>
+        <p>This is a nonprofit unofficial fan game of Hololive Production talents. All characters and other intellectual properties found in this game belong to Cover Corp. The in-game characters are not intended to wholly accurate representations of the Vtubers. Support the official right holders, and all wonderful talents of Hololive. Thank you for playing!</p>
+        <button id="credit-btn-home">Return</button>
+      </section>
+      <section id="bg">
+        <video autoplay muted loop playsinline>
+          <source src="media/fbk-2.mp4" type="video/mp4" />
+          <p>
+            Your browser doesn't support HTML video. Here is a
+            <a href="media/fbk-2.mp4" download="media/fbk-2.mp4"
+              >link to the video</a
+            >
+            instead.
+          </p>
+        </video>
       </section>
       <section id="overlay">
         <div id="card">
-          <p>You Earned: <span id="card-score">0</span></p>
-          <button onclick="home(this)">Return to FBKingdom</button>
-          <button onclick="restartGame(this)">Play Again</button>
+          <p>Distance Travelled: <span id="card-score">0</span></p>
+          <p>Points Earned: <span id="card-points">0</span></p>
+          <button id="return-home-btn">Return to FBKingdom</button>
+          <button id="play-again-btn">Play Again</button>
         </div>
       </section>
-      <canvas width="1000" height="400" id="canvas">
-        <img src="images/page_bg_raw.jpg" alt="holo-alternative" id="game-bg">
+      <canvas width="1000" height="300" id="canvas">
       </canvas>
-      
     </main>
   </body>
 </html>
