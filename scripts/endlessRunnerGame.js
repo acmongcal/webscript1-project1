@@ -15,14 +15,20 @@ const canvas = document.getElementById("canvas");
 const card = document.getElementById("card");
 const cardScore = document.getElementById("card-score");
 const cardPts = document.getElementById("card-points");
-
+const overlay = document.getElementById("overlay");
 //menu elements
 const menu = document.getElementById("menu");
 const homeBG = document.getElementById("bg");
 const help = document.getElementById("help");
 const credit = document.getElementById("credits");
+const lobby = document.getElementById("game-lobby");
+const intro = document.getElementById("intro");
+const trailer = document.getElementById("trailer");
+const trailerVid = document.getElementById("trailer-vid");
+const skipBtn = document.getElementById("skip");
 let intervalId = null;
-
+let noticeTimer = null;
+let trailerTimer = null;
 //Global variables
 window.totalPoints = 0;
 window.earnedPoints = 0;
@@ -127,6 +133,7 @@ class EndlessRunnerGame {
         cardScore.textContent = this.score;
         cardPts.textContent = earnedPoints;
         window.totalPoints += earnedPoints;
+        overlay.style.display ="flex";
         card.style.display = "block";
         
     }
@@ -202,43 +209,14 @@ const frameRate = 30;
 const groundOffset = 20;
 const endlessRunnerGame = new EndlessRunnerGame(canvas, frameRate, groundOffset, playerOptions, spawnerOptions, difficulty);
 
-
-
-
-
-
 function startGame() {
     endlessRunnerGame.start();
-    endlessRunnerGame.initialize();
-}
-
-//Restart game
-function restartGame(button) {
-    card.style.display = "none";
-    button.blur();
     endlessRunnerGame.initialize();
 }
 
 
 
 //Menu Functions
-function home(button){
-    card.style.display = "none";
-    canvas.style.display = "none";
-    button.blur();
-    menu.style.display="flex";
-    homeBG.style.display="flex";
-    clearInterval(intervalId);
-    intervalId = null;
-}
-
-function displayGame(button){
-    homeBG.style.display="none";
-    canvas.style.display="block";
-    menu.style.display = "none";
-    startGame();
-}
-
 //Display the element on the second parameter
 function swapMenu(menu1, menu2){
     menu1.style.display = "none";
@@ -246,7 +224,47 @@ function swapMenu(menu1, menu2){
 }
 
 
-document.getElementById("start-btn").addEventListener('click', displayGame);
+document.getElementById("start-btn").addEventListener('click', function(){
+    swapMenu(menu, intro);
+    homeBG.style.display="none";
+    intro.classList.add("hideElement");
+    skipBtn.style.display = "block";
+    noticeTimer = setTimeout(function(){
+        intro.style.display ="none";
+        intro.classList.remove("hideElement");
+        trailer.style.display = "flex";
+        trailer.classList.add("showElement");
+        trailerVid.play();
+        trailerVid.addEventListener('ended', function() {
+            trailer.classList.add("hideVid");
+            trailerTimer = setTimeout(function(){
+                trailer.style.display = "none";
+                skipBtn.style.display = "none";
+            },2000)
+            trailer.classList.remove("showElement");
+            trailer.classList.remove("hideElement");
+            lobby.style.display = "flex";
+        })
+    }, 7000);
+});
+
+skipBtn.addEventListener('click',function(){
+    clearTimeout(noticeTimer);
+    clearTimeout(trailerTimer);
+    intro.style.display ="none";
+    intro.classList.remove("hideElement");
+    trailer.style.display = "none";
+    trailer.classList.remove("showElement");
+    trailer.classList.remove("hideElement");
+    trailerVid.pause();
+    trailerVid.currentTime = 0;
+    skipBtn.style.display = "none";
+    lobby.style.display = "flex";
+});
+
+
+
+
 document.getElementById("help-btn").addEventListener('click', function(){
     swapMenu(menu,help);
 });
@@ -260,9 +278,32 @@ document.getElementById("credit-btn-home").addEventListener('click', function(){
     swapMenu(credit,menu);
 });
 
-document.getElementById("return-home-btn").addEventListener('click', function(){
-    home(this);
+
+
+
+
+
+
+//Lobby Event Listeners
+document.getElementById("expedition-btn").addEventListener('click',function(){
+    lobby.style.display="none";
+    canvas.style.display="block";
+    startGame();
 });
+
+
+//Expedition listeners
+document.getElementById("return-lobby-btn").addEventListener('click', function(){
+    lobby.style.display="block";
+    overlay.style.display ="none";
+    canvas.style.display="none";
+    clearInterval(intervalId);
+    intervalId = null;
+});
+
+//Restart game
 document.getElementById("play-again-btn").addEventListener('click', function(){
-    restartGame(this);
+    card.style.display = "none";
+    // button.blur();
+    endlessRunnerGame.initialize();
 });

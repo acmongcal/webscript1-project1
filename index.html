@@ -12,6 +12,7 @@
     <link rel="shortcut icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
+    <link rel="stylesheet" href="styles/reset.css" />
     <link rel="stylesheet" href="styles/normalize-fwd.css" />
     <link rel="stylesheet" href="styles/style.css" />
     <script type="module" src="scripts/endlessRunnerGame.js" defer></script>
@@ -34,7 +35,7 @@
         <p>This is a nonprofit unofficial fan game of Hololive Production talents. All characters and other intellectual properties found in this game belong to Cover Corp. The in-game characters are not intended to wholly accurate representations of the Vtubers. Support the official right holders, and all wonderful talents of Hololive. Thank you for playing!</p>
         <button id="credit-btn-home">Return</button>
       </section>
-      <section id="bg">
+      <div id="bg">
         <video autoplay muted loop playsinline>
           <source src="media/fbk-2.mp4" type="video/mp4" />
           <p>
@@ -45,17 +46,42 @@
             instead.
           </p>
         </video>
+      </div>
+      <button id="skip">Skip All Intro</button>
+      <section id="intro">
+        <h2>Notice</h2>
+        <p>This is a nonprofit unofficial fan game of Hololive Production talents. All characters and other intellectual properties found in this game belong to Cover Corp. The in-game characters are not intended to wholly accurate representations of the Vtubers. Support the official right holders, and all wonderful talents of Hololive. Thank you for playing!</p>
       </section>
+      <div id="trailer">
+        <video id="trailer-vid" playsinline>
+          <source src="media/fbk-2.mp4" type="video/mp4" />
+          <p>
+            Your browser doesn't support HTML video. Here is a
+            <a href="media/fbk-2.mp4" download="media/fbk-2.mp4"
+              >link to the video</a
+            >
+            instead.
+          </p>
+        </video>
+      </div>
+      <section id="game-lobby">
+        <div>
+          <h2>Welcome to FBKingdom</h2>
+          <p>Due to a certain incident the citizens of FBKingdom got scattered all over the Hololand. Go on expeditions to earn points and bring back all the citizens and make FBKingdom lively and complete again.</p>
+          <button id="lobby-btn">Start</button>
+        </div>
+        <img src="" alt="lobby-background">
+        <button id="expedition-btn">Start Expedition</button>
+      </section>
+      <canvas id="canvas" width="1000" height="300"></canvas>
       <section id="overlay">
         <div id="card">
           <p>Distance Travelled: <span id="card-score">0</span></p>
           <p>Points Earned: <span id="card-points">0</span></p>
-          <button id="return-home-btn">Return to FBKingdom</button>
+          <button id="return-lobby-btn">Return to FBKingdom</button>
           <button id="play-again-btn">Play Again</button>
         </div>
       </section>
-      <canvas width="1000" height="300" id="canvas">
-      </canvas>
     </main>
   </body>
 </html>
