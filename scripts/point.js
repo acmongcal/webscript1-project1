@@ -1,4 +1,4 @@
-import Point2D from '/point2d.js';
+import Point2D from './point2d.js';
 export default class Point {
     constructor(position, w, h) {
         this.position = position;

@@ -1,7 +1,7 @@
-import Point2D from '/point2d.js';
-import Collider from '/collider.js';
-import Animator from '/animator.js';
-import Movement from '/movement.js';
+import Point2D from './point2d.js';
+import Collider from './collider.js';
+import Animator from './animator.js';
+import Movement from './movement.js';
 export default class Player {
     constructor(position, animator, movement, collider) {
         this.position = position;
