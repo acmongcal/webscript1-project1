@@ -1,4 +1,4 @@
-import Point from '/scripts/point.js';
+import Point from '/point.js';
 export default class Spawner {
     constructor(obstacles, speed, startX, minLength, maxlength) {
         this.obstacles = obstacles;
