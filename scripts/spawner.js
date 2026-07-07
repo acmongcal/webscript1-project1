@@ -68,7 +68,7 @@ export default class Spawner {
         const inactiveObstacles = [];
         const pointY = [240,210, 180, 150];
         let spawnPoints = Math.floor(Math.random() * 3);
-        let randomY = Math.floor(Math.floor(Math.random() * pointY.length));
+        let randomY = Math.floor(Math.random() * pointY.length);
         for(let p = 0; p < spawnPoints; p++ ){
             inactiveObstacles.push(Point.create(-130, pointY[randomY], 30, 30));
         }

@@ -16,6 +16,9 @@ const card = document.getElementById("card");
 const cardScore = document.getElementById("card-score");
 const cardPts = document.getElementById("card-points");
 const overlay = document.getElementById("overlay");
+const citizenOverlay = document.getElementById("citizen-overlay");
+const citizenInfo = document.getElementById("citizen-card");
+
 //menu elements
 const menu = document.getElementById("menu");
 const homeBG = document.getElementById("bg");
@@ -26,14 +29,26 @@ const intro = document.getElementById("intro");
 const trailer = document.getElementById("trailer");
 const trailerVid = document.getElementById("trailer-vid");
 const skipBtn = document.getElementById("skip");
+const welcome = document.getElementById("welcome");
+const lobbyUI = document.getElementById("lobby");
+const bgImgLobby = document.getElementById("bg-img");
+const gameStats = document.getElementById("game-stats");
+const gameDistanceTravelled = document.getElementById("distance");
+const gamePointsEarned = document.getElementById("points");
+const totalGamePoints = document.getElementById("total-points");
+const citizensLobby = document.getElementById("citizens");
+const gameClear = document.getElementById("game-clear");
 let intervalId = null;
 let noticeTimer = null;
 let trailerTimer = null;
+let citizensSaved = 0;
 //Global variables
 window.totalPoints = 0;
 window.earnedPoints = 0;
 
-
+var expeditionBgm = new Audio("audio/expedition-bgm.mp3");
+var lobbyBgm = new Audio("audio/lobby-bgm.mp3");
+var menuBgm = new Audio("audio/menu-bgm.mp3");
 
 
 
@@ -88,8 +103,6 @@ class EndlessRunnerGame {
 
         // Draw game objects
         this.background.draw(this.ctx);
-        this.drawGround();
-        this.drawScore();
         this.player.draw(this.ctx);
         this.spawner.draw(this.ctx);
 
@@ -107,6 +120,7 @@ class EndlessRunnerGame {
             this.background.update(this.spawner.speed);
             this.player.update();
             this.spawner.update();
+            this.updateStats()
             
             // Check for collisions.
 
@@ -132,37 +146,33 @@ class EndlessRunnerGame {
     drawGameOver() {
         cardScore.textContent = this.score;
         cardPts.textContent = earnedPoints;
-        window.totalPoints += earnedPoints;
         overlay.style.display ="flex";
         card.style.display = "block";
         
     }
-
-    // A method used to draw the game's score.
-    drawScore() {
-        this.ctx.beginPath();
-        this.ctx.fillText("score: " + this.score, 10, 20);
-        this.ctx.closePath();
+    updateStats(){
+        gameDistanceTravelled.textContent = this.score;
+        gamePointsEarned.textContent = earnedPoints;
     }
 
-    // A method used to draw the scene's ground.
-    drawGround() {
-        this.ctx.beginPath();
-        this.ctx.rect(0, this.groundY, this.canvas.width, 3);
-        this.ctx.fillStyle = "blue";
-        this.ctx.fill();
-        this.ctx.closePath();
-    }
+
 }
-
-
+const citizens = {
+    ariyori:50,
+    oruyanke:100,
+    fubuchun:150,
+    miteiru: 200,
+    nejima: 250,
+    fubuzilla: 300
+}
+const enemies=[
+        "images/poyoyo.png",
+        "images/onigirya.png",
+        "images/pebble.png"];
 
 var bgImg = new Image();
-bgImg.src = "images/page_bg_raw.jpg";
-var pointImg = new Image();
-pointImg.src = "images/point.png";
-var enemyImg = new Image();
-enemyImg.src = "images/enemy.png";
+bgImg.src = "images/bg.png";
+
 // Define player parameters.
 const playerOptions = {
     width: 30,
@@ -174,10 +184,10 @@ const playerOptions = {
     playSpeed: 2,
     showTime: 5,
     imageSources: [
-        "images/player1.png",
-        "images/player2.png",
-        "images/player3.png",
-        "images/player4.png"
+        "images/sukonbu-1.png",
+        "images/sukonbu-2.png",
+        "images/sukonbu-3.png",
+        "images/sukonbu-4.png"
     ]
 }
 
@@ -189,12 +199,12 @@ const spawnerOptions = {
     maxlength: 220,
     speed: 5,
     obstacles: [
-        Enemy.create(-130, 0, enemyImg, 30, 50),
-        Enemy.create(-130, 0, enemyImg, 30, 50),
-        Enemy.create(-130, 0, enemyImg, 30, 50),
-        Enemy.create(-130, 0, enemyImg, 30, 50),
-        Enemy.create(-130, 0, enemyImg, 30, 50),
-        Enemy.create(-130, 0, enemyImg, 30, 50)
+        Enemy.create(-130, 0, enemies[randomize(enemies)], 40, 40),
+        Enemy.create(-130, 0, enemies[0], 40, 40),
+        Enemy.create(-130, 0, enemies[randomize(enemies)], 40, 40),
+        Enemy.create(-130, 0, enemies[1], 40, 40),
+        Enemy.create(-130, 0, enemies[randomize(enemies)], 40, 40),
+        Enemy.create(-130, 0, enemies[2], 40, 40)
     ]
 }
 
@@ -214,35 +224,39 @@ function startGame() {
     endlessRunnerGame.initialize();
 }
 
-
+function randomize(array){
+    return Math.floor(Math.random() * array.length);
+}
 
 //Menu Functions
 //Display the element on the second parameter
 function swapMenu(menu1, menu2){
     menu1.style.display = "none";
     menu2.style.display = "flex";
+    menu2.classList.add("show-menu");
 }
 
 
 document.getElementById("start-btn").addEventListener('click', function(){
+    menuBgm.pause();
     swapMenu(menu, intro);
     homeBG.style.display="none";
-    intro.classList.add("hideElement");
+    intro.classList.add("hide-notice");
     skipBtn.style.display = "block";
     noticeTimer = setTimeout(function(){
         intro.style.display ="none";
-        intro.classList.remove("hideElement");
+        intro.classList.remove("hide-notice");
         trailer.style.display = "flex";
-        trailer.classList.add("showElement");
+        trailer.classList.add("show-element");
         trailerVid.play();
         trailerVid.addEventListener('ended', function() {
-            trailer.classList.add("hideVid");
+            trailer.classList.add("hide-element");
             trailerTimer = setTimeout(function(){
                 trailer.style.display = "none";
                 skipBtn.style.display = "none";
-            },2000)
-            trailer.classList.remove("showElement");
-            trailer.classList.remove("hideElement");
+            },1000)
+            trailer.classList.remove("show-element");
+            trailer.classList.remove("hide-element");
             lobby.style.display = "flex";
         })
     }, 7000);
@@ -252,10 +266,10 @@ skipBtn.addEventListener('click',function(){
     clearTimeout(noticeTimer);
     clearTimeout(trailerTimer);
     intro.style.display ="none";
-    intro.classList.remove("hideElement");
+    intro.classList.remove("hide-element");
     trailer.style.display = "none";
-    trailer.classList.remove("showElement");
-    trailer.classList.remove("hideElement");
+    trailer.classList.remove("show-element");
+    trailer.classList.remove("hide-element");
     trailerVid.pause();
     trailerVid.currentTime = 0;
     skipBtn.style.display = "none";
@@ -263,13 +277,26 @@ skipBtn.addEventListener('click',function(){
 });
 
 
-
+document.getElementById("lobby-btn").addEventListener('click', function(e){
+    e.target.style.display = "none";
+    welcome.classList.add("hide-element");
+    setTimeout(function(){
+        lobbyBgm.play();
+        welcome.style.display = "none";
+        lobbyUI.style.display = "flex";
+        lobbyUI.classList.add("show-element");
+        bgImgLobby.getElementsByTagName("img")[0].src = "images/fbkingdom-lobby.png"
+        bgImgLobby.classList.add("show-element");
+    },1000);
+});
 
 document.getElementById("help-btn").addEventListener('click', function(){
     swapMenu(menu,help);
+    menuBgm.play();
 });
 document.getElementById("credits-btn").addEventListener('click', function(){
     swapMenu(menu,credit);
+    menuBgm.play();
 });
 document.getElementById("help-btn-home").addEventListener('click', function(){
     swapMenu(help,menu);
@@ -286,24 +313,74 @@ document.getElementById("credit-btn-home").addEventListener('click', function(){
 
 //Lobby Event Listeners
 document.getElementById("expedition-btn").addEventListener('click',function(){
+    lobbyBgm.pause();
     lobby.style.display="none";
     canvas.style.display="block";
+    gameStats.style.display="flex";
+    expeditionBgm.play();
     startGame();
 });
 
 
 //Expedition listeners
 document.getElementById("return-lobby-btn").addEventListener('click', function(){
+    expeditionBgm.pause();
+    lobbyBgm.play();
     lobby.style.display="block";
     overlay.style.display ="none";
     canvas.style.display="none";
+    gameStats.style.display="none";
     clearInterval(intervalId);
     intervalId = null;
+    window.totalPoints += earnedPoints;
+    totalGamePoints.getElementsByTagName("p")[0].textContent = window.totalPoints;
 });
 
 //Restart game
 document.getElementById("play-again-btn").addEventListener('click', function(){
     card.style.display = "none";
-    // button.blur();
     endlessRunnerGame.initialize();
 });
+
+
+citizensLobby.querySelectorAll(".locked").forEach(citizen => {
+    citizen.addEventListener("mouseover",function(){
+        citizenOverlay.style.display="flex";
+        if(citizen.classList.contains("locked")){
+            citizenInfo.getElementsByTagName("p")[0].textContent = citizens[citizen.id] +  " pts to unlock ????" ;
+        }
+        
+    });
+
+    citizen.addEventListener("mouseout",function(){
+        citizenOverlay.style.display="none";
+    });
+
+    citizen.addEventListener("click",function(){
+        citizenOverlay.style.display="flex";
+        if(citizen.classList.contains("locked") && totalPoints < citizens[citizen.id]){
+            citizenInfo.getElementsByTagName("p")[0].textContent = "You dont have enough points";
+        }
+        else if(citizen.classList.contains("locked") && totalPoints >= citizens[citizen.id]){
+            totalPoints -= citizens[citizen.id];
+            citizensSaved++;
+            citizenInfo.getElementsByTagName("p")[0].textContent = "You have saved " + [citizen.id];
+            citizen.classList.remove("locked");
+            citizen.classList.add("unlocked");
+            citizen.addEventListener("mouseover",function(){
+                citizenOverlay.style.display="flex";
+                citizenInfo.getElementsByTagName("p")[0].textContent = "Citizen: " + citizen.id;
+            });
+
+            if(citizensSaved==6){
+                gameClear.classList.add("show-element");
+                setTimeout(function(){
+                    gameClear.style.display = "flex";
+                }, 8000);
+                
+            }
+        }
+        
+    });
+});
+

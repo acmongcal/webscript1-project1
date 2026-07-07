@@ -13,6 +13,10 @@ h1{
 h2{
   font-size: 3rem;
 }
+
+h3{
+  font-size: 2rem;
+}
 button {
   outline: none;
   color: #b29b64;
@@ -27,6 +31,37 @@ button {
   
 }
 
+
+#game-clear{
+  background-color: #0f131e;
+  position:absolute;
+  z-index: 10000;
+  top: 0;
+  display: none;
+  flex-wrap: wrap;
+  margin: 0 auto;
+  align-items: center;
+  width: 100vw;
+}
+#game-clear img{
+  width:46vw;
+  height: 100vh;
+}
+
+#clear-msg{
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #0f131e;
+  height: 100vh;
+  width: 50vw;
+}
+
+#clear-msg p{
+  font-size: 2rem;
+}
 
 #menu{
   position:relative;
@@ -46,9 +81,9 @@ button {
   z-index: 100;
   display: none;
   flex-wrap: wrap;
-  width: 30rem;
+  width: 60rem;
   margin: 0 auto;
-  margin-top: 20rem;
+  margin-top: 1%;
   align-items: center;
   border-radius: 20px;
   border: #b29b64 0.1rem solid;
@@ -56,6 +91,7 @@ button {
 }
 #help button{
   margin: 0 auto;
+  margin-top: 1rem;
 }
 
 #credits{
@@ -64,14 +100,26 @@ button {
   z-index: 100;
   display: none;
   flex-wrap: wrap;
-  width: 30rem;
+  width: 40rem;
   margin: 0 auto;
-  margin-top: 20rem;
+  margin-top: 1rem;
   align-items: center;
   border-radius: 20px;
   border: #b29b64 0.1rem solid;
-  padding: 30px;
+  padding: 20px;
+  line-height: 1.5rem;
 }
+
+#credits a, #credits a:visited{
+  text-decoration: none;
+  color: #b29b64;
+}
+
+#credits a:hover{
+  color: #f0f0f0;
+  text-decoration: underline;
+}
+
 
 #credits button{
   margin: 0 auto;
@@ -86,21 +134,22 @@ button {
 #skip{
   display: none;
   position: fixed;
-  top: 1rem;
+  top: 2.5rem;
   right: 1rem;
   z-index: 1000;
 }
 
 
-#bg{
+#bg,#bg-img{
   display: flex;
   flex-wrap: wrap;
   position: absolute;
   top:0;
+  z-index: -1000;
   width: 100%;
 }
 
-#bg video{
+#bg video,#bg-img img{
   width: 100vw;
   height: 100vh;
   object-fit: cover;
@@ -152,6 +201,29 @@ button {
   display: none;
 }
 
+#welcome{
+  background-color:#0f131e;
+  width: 40%;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  margin-top: 10%;
+  padding: 2rem;
+  border-radius: 20px;
+  border: #b29b64 0.1rem solid;
+}
+#welcome p{
+  font-size: 1.6rem;
+  line-height: 2.5rem;
+}
+
+#lobby{
+  display: none;
+}
+
 
 #overlay {
   position: absolute;
@@ -174,6 +246,7 @@ button {
   display: none;
   animation: cardIn 1s forwards;
   margin: 0 auto;
+  padding: 2rem;
 }
 
 #overlay #card > p {
@@ -182,15 +255,165 @@ button {
   user-select: none;
 }
 
-.hideElement{
+#game-stats{
+  width: fit-content;
+  display: none;
+  flex-wrap: wrap;
+  gap: 10rem;
+  justify-content: center;
+  border-radius: 20px;
+  border: #b29b64 0.1rem solid;
+  padding: 0.3rem;
+  margin: 0 auto;
+  margin-top: 1rem;
+}
+
+#expedition-btn{
+  position: absolute;
+  width: fit-content;
+  bottom: 2rem;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#lobby img{
+  object-fit: contain;
+}
+
+
+
+.locked{
+  filter: brightness(0%);
+
+}
+.locked:hover{
+  cursor: pointer;
+}
+
+.unlocked{
+  filter: brightness(100%);
+}
+
+#ariyori {
+  width:500px;
+  height: 150px;
+  position: absolute;
+  left: 13rem;
+  bottom: 9rem;
+}
+
+#oruyanke {
+  position: absolute;
+  left: 2rem;
+  bottom: 9rem;
+  width:300px;
+  height: 100px;
+}
+
+#nejima{
+  position: absolute;
+  right: 20rem;
+  bottom: 9rem;
+  width:300px;
+  height: 125px;
+}
+
+#fubuzilla{
+  position: absolute;
+  right: 5rem;
+  bottom: 9rem;
+  width:300px;
+  height: 400px;
+}
+
+#miteiru{
+  position: absolute;
+  left: 10rem;
+  top: 9rem;
+  width:300px;
+  height: 150px;
+}
+
+#fubuchun{
+  position: absolute;
+  right: 20rem;
+  top: 9rem;
+  width:300px;
+  height: 200px;
+}
+
+#total-points{
+  height: 5rem;
+  width: fit-content;
+  background-color: #0f131e;
+  display: flex;
+  position: fixed;
+  top: 1rem;
+  right: 7rem;
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20px;
+  border: #b29b64 0.1rem solid;
+  padding: 2rem;
+  
+}
+
+#total-points p{
+  font-size: 2rem;
+}
+#total-points img{
+  width: 5rem;
+  height: 5rem;
+  z-index: 1000;
+}
+
+
+#citizen-overlay {
+  position: absolute;
+  top: 20rem;
+  left: 0;
+  width: fit-content;
+  height: fit-content;
+  display: none;
+  align-items: center;
+  text-align: center;
+  bottom: 2rem;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#citizen-overlay #citizen-card {
+  background-color: #0f131e;
+  color: #b29b64;
+  border: #b29b64 0.1rem solid;
+  width: 500px;
+  border-radius: 5px;
+  animation: cardIn 1s forwards;
+  margin: 0 auto;
+  padding: 2rem;
+  display: block;
+}
+
+#citizen-overlay #citizen-card > p {
+  font-size: 50px;
+  margin-top: 10px;
+  user-select: none;
+}
+
+.hide-notice{
   animation: hide 7s forwards;
 }
-.showElement{
+.show-element{
   animation: show 5s forwards;
 }
 
-.hideVid{
-  animation: hide 2s forwards;
+.hide-element{
+  animation: hide 1s forwards;
+}
+
+.show-menu{
+  animation: cardIn 1s forwards;
 }
 
 @keyframes cardIn {

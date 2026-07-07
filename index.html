@@ -28,19 +28,42 @@
       <section id="help">
         <h2>How to Play</h2>
         <p>Clear the game by collecting points to bring back all the citizens of FBKingdom. Press spacebar or mouse left click to avoid obstacles.</p>
+        <video autoplay muted loop playsinline>
+          <source src="media/tutorial-vid.mp4" type="video/mp4" />
+          <p>
+            Your browser doesn't support HTML video. Here is a
+            <a href="media/tutorial-vid.mp4" download="media/tutorial-vid.mp4"
+              >link to the video</a
+            >
+            instead.
+          </p>
+        </video>
         <button id="help-btn-home">Return</button>
       </section>
       <section id="credits">
         <h2>Credits</h2>
-        <p>This is a nonprofit unofficial fan game of Hololive Production talents. All characters and other intellectual properties found in this game belong to Cover Corp. The in-game characters are not intended to wholly accurate representations of the Vtubers. Support the official right holders, and all wonderful talents of Hololive. Thank you for playing!</p>
+        <p>This is a nonprofit unofficial fan game of Hololive Production talents. All characters and other intellectual properties found in this game belong to Cover Corp. The in-game characters are not intended to wholly accurate representations of the Vtubers. Support the official right holders, and all wonderful talents of Hololive.</p>
+        <div>
+          <h3>Music</h3>
+          <p>Expedition BGM: <a href="https://youtu.be/sDJEf412f8I?si=p_ioHH9Hr0VSCXli">Koseki Bijou</a></p>
+          <p>Lobby BGM: <a href="https://youtu.be/sDJEf412f8I?si=p_ioHH9Hr0VSCXli">Shirakami Fubuki</a></p>
+          <p>Menu BGM: <a href="https://youtu.be/sDJEf412f8I?si=p_ioHH9Hr0VSCXli">Shirakami Fubuki</a></p>
+          <h3>Images</h3>
+          <p>Expedition Background Image: Screen capture taken from <a href="https://www.youtube.com/watch?v=jGrain8d4B8">Koseki Bijou VOD intro</a></p>
+          <p>Game Clear Image: <a href="https://x.com/Laxxxli/status/1853414170311774334">@Laxxxli</a></p>
+          <p>Other Images(fbkingdom citizens, running sukonbu, enemies ): Drawn by <a href="https://kuuhakudev.com/">Me(Kuuhaku)</a></p>
+          <h3>Videos</h3>
+          <p>Menu Background Video: Trimmed from <a href="https://www.youtube.com/watch?v=9TzkyhnNdWo">Shirakami Fubuki yt video</a></p>
+          <p>Start Game Cinematic: Trimmed from <a href="https://www.youtube.com/watch?v=ZMSQxjL1Fcw">Shirakami Fubuki yt video</a></p>
+        </div>
         <button id="credit-btn-home">Return</button>
       </section>
       <div id="bg">
         <video autoplay muted loop playsinline>
-          <source src="media/fbk-2.mp4" type="video/mp4" />
+          <source src="media/fbkingdom-home.mp4" type="video/mp4" />
           <p>
             Your browser doesn't support HTML video. Here is a
-            <a href="media/fbk-2.mp4" download="media/fbk-2.mp4"
+            <a href="media/fbkingdom-home.mp4" download="media/fbkingdom-home.mp4"
               >link to the video</a
             >
             instead.
@@ -54,10 +77,10 @@
       </section>
       <div id="trailer">
         <video id="trailer-vid" playsinline>
-          <source src="media/fbk-2.mp4" type="video/mp4" />
+          <source src="media/fbkingdom-trailer.mp4" type="video/mp4" />
           <p>
             Your browser doesn't support HTML video. Here is a
-            <a href="media/fbk-2.mp4" download="media/fbk-2.mp4"
+            <a href="media/fbkingdom-trailer.mp4" download="media/fbkingdom-trailer.mp4"
               >link to the video</a
             >
             instead.
@@ -65,21 +88,56 @@
         </video>
       </div>
       <section id="game-lobby">
-        <div>
+        <div id="welcome">
           <h2>Welcome to FBKingdom</h2>
           <p>Due to a certain incident the citizens of FBKingdom got scattered all over the Hololand. Go on expeditions to earn points and bring back all the citizens and make FBKingdom lively and complete again.</p>
-          <button id="lobby-btn">Start</button>
+          <button id="lobby-btn">Start Adventure</button>
         </div>
-        <img src="" alt="lobby-background">
-        <button id="expedition-btn">Start Expedition</button>
+        <div id="bg-img">
+          <img src="images/fbkingdom-welcome.png" alt="welcome-screen-background">
+        </div>
+        
+        <div id="lobby">
+          <div id="citizens">
+            <img id="ariyori" class="locked" src="images/ariyori-no-alligator.png" alt="ariyori-no-alligator">
+            <img id="oruyanke" class="locked" src="images/oruyanke.png" alt="images/oruyanke.png">
+            <img id="fubuchun" class="locked" src="images/fubuchun.png" alt="images/fubuchun.png">
+            <img id="miteiru" class="locked" src="images/miteiru.png" alt="images/miteiru.png">
+            <img id="nejima" class="locked" src="images/nejima-kitsune.png" alt="images/nejima-kitsune.png">
+            <img id="fubuzilla" class="locked" src="images/fubuzilla.png" alt="images/fubuzilla.png">
+          </div>
+          
+          <div id="total-points">
+            <p>0</p>
+            <img src="images/point.png" alt="point">
+          </div>
+          <button id="expedition-btn">Start Expedition</button>
+        </div>
       </section>
-      <canvas id="canvas" width="1000" height="300"></canvas>
+      <canvas id="canvas" width="1000" height="400"></canvas>
+      <div id="game-stats">
+          <p>Distance Travelled: <span id="distance">0</span></p>
+          <p>Points earned: <span id="points">0</span></p>
+          <p>Press space or click left mouse button to jump.</p>
+        </div>
       <section id="overlay">
         <div id="card">
           <p>Distance Travelled: <span id="card-score">0</span></p>
           <p>Points Earned: <span id="card-points">0</span></p>
           <button id="return-lobby-btn">Return to FBKingdom</button>
           <button id="play-again-btn">Play Again</button>
+        </div>
+      </section>
+      <section id="citizen-overlay">
+        <div id="citizen-card">
+          <p></p>
+        </div>
+      </section>
+      <section id="game-clear">
+        <img src="images/fbkingdom.jpg" alt="fbkingdom-citizens">
+        <div id="clear-msg">
+          <h2>Game Cleared</h2>
+          <p>You have saved all the citizens of FBKingdom. Thank you for playing</p>
         </div>
       </section>
     </main>

@@ -1,17 +1,21 @@
 import Point2D from '/scripts/point2d.js';
+
+
+
 export default class Enemy {
     constructor(position, image, w, h) {
         this.position = position;
         this.w = w;
         this.h = h;
-        this.image = image;
+        let enemyImg = new Image();
+        enemyImg.src = image;
+        this.image = enemyImg;
     }
 
     // A method that can be used to draw the point.
     draw(ctx) {
         ctx.beginPath();
-        ctx.drawImage(this.image,this.position.x,this.position.y, this.w, this.h);
-        ctx.drawImage(this.image,this.position.x,this.position.y, this.w, this.h);
+        ctx.drawImage(this.image,this.position.x,this.position.y, this.w, this.h)
         ctx.closePath();
     }
 
