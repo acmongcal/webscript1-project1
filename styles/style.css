@@ -28,9 +28,12 @@ button {
   border: #b29b64 0.1rem solid;
   font-size: 20px;
   cursor: pointer;
-  
+  transition: all 1s ease;
 }
-
+button:hover {
+    color: #0f131e;
+    background-color: #fff;
+}
 
 #game-clear{
   background-color: #0f131e;
@@ -288,6 +291,7 @@ button {
 }
 .locked:hover{
   cursor: pointer;
+  user-drag: none;
 }
 
 .unlocked{
