@@ -51,6 +51,8 @@ var lobbyBgm = new Audio("audio/lobby-bgm.mp3");
 var menuBgm = new Audio("audio/menu-bgm.mp3");
 var jumpSFX = new Audio("audio/jump-sfx.mp3");
 var clickSFX = new Audio("audio/button-click.mp3");
+var hoverSFX = new Audio("audio/hover-sfx.mp3");
+var buttonHoverSFX = new Audio("audio/button-hover.mp3");
 
 expeditionBgm.volume= 0.1;
 lobbyBgm.volume= 0.1;
@@ -86,7 +88,7 @@ class EndlessRunnerGame {
     // A method used to start the game.
     start() {
         document.addEventListener('keydown', this.keydown.bind(this));
-        addEventListener('mousedown==', e => {
+        addEventListener('mousedown', e => {
             if(!this.gameOver){
                 jumpSFX.play();
                 this.player.jump();
@@ -366,6 +368,7 @@ document.getElementById("play-again-btn").addEventListener('click', function(){
 citizensLobby.querySelectorAll(".locked").forEach(citizen => {
     citizen.addEventListener("mouseover",function(){
         citizenOverlay.style.display="flex";
+        hoverSFX.play();
         if(citizen.classList.contains("locked")){
             citizenInfo.getElementsByTagName("p")[0].textContent = citizens[citizen.id] +  " pts to unlock ????" ;
         }
@@ -377,6 +380,7 @@ citizensLobby.querySelectorAll(".locked").forEach(citizen => {
     });
 
     citizen.addEventListener("click",function(){
+        clickSFX.play();
         citizenOverlay.style.display="flex";
         if(citizen.classList.contains("locked") && totalPoints < citizens[citizen.id]){
             citizenInfo.getElementsByTagName("p")[0].textContent = "You dont have enough points";
@@ -388,6 +392,7 @@ citizensLobby.querySelectorAll(".locked").forEach(citizen => {
             citizen.classList.remove("locked");
             citizen.classList.add("unlocked");
             citizen.addEventListener("mouseover",function(){
+                hoverSFX.play();
                 citizenOverlay.style.display="flex";
                 citizenInfo.getElementsByTagName("p")[0].textContent = "Citizen: " + citizen.id;
             });
@@ -404,3 +409,8 @@ citizensLobby.querySelectorAll(".locked").forEach(citizen => {
     });
 });
 
+document.querySelectorAll("button").forEach(button => {
+    button.addEventListener("mouseover",function(){
+    buttonHoverSFX.play();
+    });
+});
