@@ -4,6 +4,8 @@ export default class Collider {
         this.position = position;
         this.w = w;
         this.h = h;
+        this.pointSFX = new Audio("audio/point-sfx.mp3");
+        this.gameOverSFX = new Audio("audio/game-over-sfx.mp3");
     }
 
     // A method that can be used to check if the
@@ -22,11 +24,13 @@ export default class Collider {
         others.forEach(other => {
             if(this.overlaps(other)){
                 if(other.constructor.name == "Point"){
+                    this.pointSFX.play();
                     window.earnedPoints++;
                     others.splice(other,1);
                     gameOver = false;
                 }
                 else{
+                    this.gameOverSFX.play();
                     gameOver = true;
                 }
             }

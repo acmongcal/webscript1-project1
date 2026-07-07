@@ -291,7 +291,6 @@ button:hover {
 }
 .locked:hover{
   cursor: pointer;
-  user-drag: none;
 }
 
 .unlocked{

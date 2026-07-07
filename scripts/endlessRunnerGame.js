@@ -49,6 +49,13 @@ window.earnedPoints = 0;
 var expeditionBgm = new Audio("audio/expedition-bgm.mp3");
 var lobbyBgm = new Audio("audio/lobby-bgm.mp3");
 var menuBgm = new Audio("audio/menu-bgm.mp3");
+var jumpSFX = new Audio("audio/jump-sfx.mp3");
+var clickSFX = new Audio("audio/button-click.mp3");
+
+expeditionBgm.volume= 0.1;
+lobbyBgm.volume= 0.1;
+menuBgm.volume= 0.1;
+
 
 
 
@@ -79,9 +86,11 @@ class EndlessRunnerGame {
     // A method used to start the game.
     start() {
         document.addEventListener('keydown', this.keydown.bind(this));
-        addEventListener('mousedown', e => {
+        addEventListener('mousedown==', e => {
             if(!this.gameOver){
+                jumpSFX.play();
                 this.player.jump();
+                
             }
         });
         intervalId =  setInterval(this.loop.bind(this), this.frameRate);
@@ -92,6 +101,7 @@ class EndlessRunnerGame {
     keydown(event) {
         if (event.code == 'Space') {
             if (!this.gameOver)
+                jumpSFX.play();
                 this.player.jump();
         }
     }
@@ -238,6 +248,7 @@ function swapMenu(menu1, menu2){
 
 
 document.getElementById("start-btn").addEventListener('click', function(){
+    clickSFX.play();
     menuBgm.pause();
     swapMenu(menu, intro);
     homeBG.style.display="none";
@@ -263,6 +274,7 @@ document.getElementById("start-btn").addEventListener('click', function(){
 });
 
 skipBtn.addEventListener('click',function(){
+    clickSFX.play();
     clearTimeout(noticeTimer);
     clearTimeout(trailerTimer);
     intro.style.display ="none";
@@ -278,6 +290,7 @@ skipBtn.addEventListener('click',function(){
 
 
 document.getElementById("lobby-btn").addEventListener('click', function(e){
+    clickSFX.play();
     e.target.style.display = "none";
     welcome.classList.add("hide-element");
     setTimeout(function(){
@@ -291,17 +304,21 @@ document.getElementById("lobby-btn").addEventListener('click', function(e){
 });
 
 document.getElementById("help-btn").addEventListener('click', function(){
+    clickSFX.play();
     swapMenu(menu,help);
     menuBgm.play();
 });
 document.getElementById("credits-btn").addEventListener('click', function(){
+    clickSFX.play();
     swapMenu(menu,credit);
     menuBgm.play();
 });
 document.getElementById("help-btn-home").addEventListener('click', function(){
+    clickSFX.play();
     swapMenu(help,menu);
 });
 document.getElementById("credit-btn-home").addEventListener('click', function(){
+    clickSFX.play();
     swapMenu(credit,menu);
 });
 
@@ -313,6 +330,7 @@ document.getElementById("credit-btn-home").addEventListener('click', function(){
 
 //Lobby Event Listeners
 document.getElementById("expedition-btn").addEventListener('click',function(){
+    clickSFX.play();
     lobbyBgm.pause();
     lobby.style.display="none";
     canvas.style.display="block";
@@ -324,6 +342,7 @@ document.getElementById("expedition-btn").addEventListener('click',function(){
 
 //Expedition listeners
 document.getElementById("return-lobby-btn").addEventListener('click', function(){
+    clickSFX.play();
     expeditionBgm.pause();
     lobbyBgm.play();
     lobby.style.display="block";
@@ -338,6 +357,7 @@ document.getElementById("return-lobby-btn").addEventListener('click', function()
 
 //Restart game
 document.getElementById("play-again-btn").addEventListener('click', function(){
+    clickSFX.play();
     card.style.display = "none";
     endlessRunnerGame.initialize();
 });
