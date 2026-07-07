@@ -115,11 +115,11 @@ button:hover {
 
 #credits a, #credits a:visited{
   text-decoration: none;
-  color: #b29b64;
+  color: #f0f0f0;
 }
 
 #credits a:hover{
-  color: #f0f0f0;
+  color: #b29b64;
   text-decoration: underline;
 }
 
