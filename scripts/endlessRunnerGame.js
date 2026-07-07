@@ -38,6 +38,7 @@ const gamePointsEarned = document.getElementById("points");
 const totalGamePoints = document.getElementById("total-points");
 const citizensLobby = document.getElementById("citizens");
 const gameClear = document.getElementById("game-clear");
+const supported = document.getElementById("supported");
 let intervalId = null;
 let noticeTimer = null;
 let trailerTimer = null;
@@ -53,10 +54,14 @@ var jumpSFX = new Audio("audio/jump-sfx.mp3");
 var clickSFX = new Audio("audio/button-click.mp3");
 var hoverSFX = new Audio("audio/hover-sfx.mp3");
 var buttonHoverSFX = new Audio("audio/button-hover.mp3");
+let introSkip = false;
 
 expeditionBgm.volume= 0.1;
 lobbyBgm.volume= 0.1;
 menuBgm.volume= 0.1;
+expeditionBgm.loop = true;
+lobbyBgm.loop = true;
+menuBgm.loop = true;
 
 
 
@@ -250,29 +255,41 @@ function swapMenu(menu1, menu2){
 
 
 document.getElementById("start-btn").addEventListener('click', function(){
-    clickSFX.play();
-    menuBgm.pause();
-    swapMenu(menu, intro);
-    homeBG.style.display="none";
-    intro.classList.add("hide-notice");
-    skipBtn.style.display = "block";
-    noticeTimer = setTimeout(function(){
-        intro.style.display ="none";
-        intro.classList.remove("hide-notice");
-        trailer.style.display = "flex";
-        trailer.classList.add("show-element");
-        trailerVid.play();
-        trailerVid.addEventListener('ended', function() {
-            trailer.classList.add("hide-element");
-            trailerTimer = setTimeout(function(){
-                trailer.style.display = "none";
-                skipBtn.style.display = "none";
-            },1000)
-            trailer.classList.remove("show-element");
-            trailer.classList.remove("hide-element");
-            lobby.style.display = "flex";
-        })
-    }, 7000);
+    document.getElementById("start-btn").textContent = "Continue";
+    supported.style.display = "none";
+    if(introSkip){
+        swapMenu(menu, lobby);
+        menuBgm.pause();
+        supported.style.display = "none";
+        homeBG.style.display="none";
+        lobbyBgm.play();
+    }
+    else if(!introSkip){
+        introSkip=true;
+        clickSFX.play();
+        menuBgm.pause();
+        swapMenu(menu, intro);
+        homeBG.style.display="none";
+        intro.classList.add("hide-notice");
+        skipBtn.style.display = "block";
+        noticeTimer = setTimeout(function(){
+            intro.style.display ="none";
+            intro.classList.remove("hide-notice");
+            trailer.style.display = "flex";
+            trailer.classList.add("show-element");
+            trailerVid.play();
+            trailerVid.addEventListener('ended', function() {
+                trailer.classList.add("hide-element");
+                trailerTimer = setTimeout(function(){
+                    trailer.style.display = "none";
+                    skipBtn.style.display = "none";
+                },1000)
+                trailer.classList.remove("show-element");
+                trailer.classList.remove("hide-element");
+                lobby.style.display = "flex";
+            })
+        }, 7000);
+    }
 });
 
 skipBtn.addEventListener('click',function(){
@@ -341,6 +358,16 @@ document.getElementById("expedition-btn").addEventListener('click',function(){
     startGame();
 });
 
+document.getElementById("lobby-btn-home").addEventListener('click',function(){
+    clickSFX.play();
+    lobbyBgm.pause();
+    swapMenu(lobby, menu);
+    supported.style.display= "block";
+    homeBG.style.display="flex";
+    menuBgm.play();
+    
+})
+
 
 //Expedition listeners
 document.getElementById("return-lobby-btn").addEventListener('click', function(){
@@ -387,6 +414,7 @@ citizensLobby.querySelectorAll(".locked").forEach(citizen => {
         }
         else if(citizen.classList.contains("locked") && totalPoints >= citizens[citizen.id]){
             totalPoints -= citizens[citizen.id];
+            totalGamePoints.getElementsByTagName("p")[0].textContent = window.totalPoints;
             citizensSaved++;
             citizenInfo.getElementsByTagName("p")[0].textContent = "You have saved " + [citizen.id];
             citizen.classList.remove("locked");
