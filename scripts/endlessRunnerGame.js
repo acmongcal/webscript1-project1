@@ -1,14 +1,14 @@
 //Credits to Nicolai Andersen:  https://medium.com/better-programming/how-to-build-a-2d-endless-runner-game-with-javascript-and-html-11940ab797bf
 
-import Animator from '/scripts/animator.js';
-import Background from '/scripts/background.js';
-import Collider from '/scripts/collider.js';
-import Movement from '/scripts/movement.js';
-import Player from '/scripts/player.js';
-import Point2D from '/scripts/point2d.js';
-import Point from '/scripts/point.js';
-import Spawner from '/scripts/spawner.js';
-import Enemy from '/scripts/enemy.js';
+import Animator from './animator.js';
+import Background from './background.js';
+import Collider from './collider.js';
+import Movement from './movement.js';
+import Player from './player.js';
+import Point2D from './point2d.js';
+import Point from './point.js';
+import Spawner from './spawner.js';
+import Enemy from './enemy.js';
 
 
 const canvas = document.getElementById("canvas");
