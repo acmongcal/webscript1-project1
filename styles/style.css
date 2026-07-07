@@ -103,9 +103,10 @@ button:hover {
   z-index: 100;
   display: none;
   flex-wrap: wrap;
-  width: 40rem;
+  flex-direction: column;
+  width: 60rem;
   margin: 0 auto;
-  margin-top: 1rem;
+  margin-top: 0.5rem;
   align-items: center;
   border-radius: 20px;
   border: #b29b64 0.1rem solid;
