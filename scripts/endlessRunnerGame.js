@@ -175,12 +175,12 @@ class EndlessRunnerGame {
 
 }
 const citizens = {
-    ariyori:50,
-    oruyanke:100,
-    fubuchun:150,
-    miteiru: 200,
-    nejima: 250,
-    fubuzilla: 300
+    ariyori:25,
+    oruyanke:30,
+    fubuchun:35,
+    miteiru: 40,
+    nejima: 45,
+    fubuzilla: 50
 }
 const enemies=[
         "images/poyoyo.png",
